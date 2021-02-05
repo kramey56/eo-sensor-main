@@ -99,7 +99,7 @@ void HiRACS::getCommands() {
             }
         }
 
-        // Waif for request. Will wait indefinitely.
+        // Wait for request. Will wait indefinitely.
         activity = select(max_sd + 1, &_readfds, NULL, NULL, NULL);
         if ((activity < 0) && (errno != EINTR)) {
             std::cout << "Select error" << std::endl;
