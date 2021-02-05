@@ -14,6 +14,7 @@ using std::vector;
 using std::string;
 
 class FocuserException: public std::exception {
+    // A class to represent errors spqcific to focuser operation
     private:
         string msg;
 
@@ -27,6 +28,7 @@ class FocuserException: public std::exception {
 };
 
 class Focuser {
+    // Software interface to the Lynx focuser controller used in the HiRACS camera
     private:
         map<string, string> status;
         string _header;
