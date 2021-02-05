@@ -8,12 +8,23 @@ using std::endl;
 using std::stoi;
 using std::stof;
 
+// The Focuser class represents the hardware focusing unit attached to the camera lens. It is capable of moving
+// the sensor relative to the focal point of the lens. The focuser controller supports up to two physical
+// focusing units so this code can support two instances of the Focuser class.
+//
+// Parameters:
+//	id: Specifies which of the two possible focusing units this instance controls
+//	mhws: minimum hardware step size. This is  programmable parameter of the controller
+//	hwss: hardware step size. How many hardware steps are in each logical step
+//	sss: small step size
+//	mss: medium step size
+//	lss: large step size
 Focuser::Focuser(int id, int mhws, float hwss, int sss, int mss, int lss): _maxHwSteps(mhws), _hwStepSize(hwss), 
                                                                            _smallStepSize(sss), _mediumStepSize(mss),
                                                                            _largeStepSize(lss)
 {
-    const std::string LYNX_IP = "192.168.1.50";
-    const unsigned short LYNX_PORT = 9760;
+    const std::string LYNX_IP = "192.168.1.50";		// Defined by hw controller configuration
+    const unsigned short LYNX_PORT = 9760;		// Set by hardware
     _focuserSocket = 0;
     struct sockaddr_in serv_addr;
 
@@ -51,6 +62,8 @@ Focuser::~Focuser() {
 }
 
 string Focuser::lynxCmd(string cmd) {
+    // Take a command from the GUI and translate it to the format required
+    // by the lynx focuser hardware
     char buffer[1024] = {0};
 
     string msg = "<" + _header + cmd + ">";
@@ -107,6 +120,8 @@ void Focuser::_getStatus() {
 	} */
 }
 
+// These functions extract requested values from the status structure returned
+// by the hardware controller
 int Focuser::getPosition() {
     return stoi(status["Curr Pos"]);
 }
@@ -145,6 +160,7 @@ vector<int> Focuser::getStepSizes() {
     return steps;
 }
 
+// Used for stand-alone testing
 /* int main( int argc, char **) {
     try {
         Focuser myFocuser = Focuser(1);
