@@ -5,6 +5,7 @@
 
 using std::runtime_error;
 
+// Camera specific runtime errors
 class CameraException : public runtime_error {
     public:
         CameraException(const std::string& _message)
